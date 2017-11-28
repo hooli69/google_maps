@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Simple Map</title>
+  <meta name="viewport" content="initial-scale=1.0">
+  <meta charset="utf-8">
+  <style>
+      /* Always set the map height explicitly to define the size of the div
+      * element that contains the map. */
+      #map {
+        height: 75%;
+        width: 75%;
+        position: absolute;
+        margin: 3% 12.5% 0% 12.5%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Google Maps Homemade</h1>
+    <div class="formulaire">
+      <div class="form">
+       <form id="frm1" action="">
+        Longitude<input id="lat" type="number">
+        Latitude<input id="lng" type="number">
+      </form> 
+      <button onclick="mybgmap()"> GO !</button>
+    </div>
+  </div>
+</div>
+<div id="map"></div>
+<script>
+
+  var map;
+  var lat = document.getElementById("lat");
+  var lng = document.getElementById("lng");
+  var lt = 45.75;
+  var lg = 4.85;
+
+  function mybgmap(){
+    lt = parseInt(lat.value);
+    lg = parseInt(lng.value);
+
+    initMap();
+  }
+
+  function initMap() {
+    map = new google.maps.Map(document.getElementById('map'), {
+      center: {lat: lt, lng: lg},
+      zoom: 8
+    });
+
+    /* Toute la suite est pour animé le marqueur */
+    var marker = new google.maps.Marker({
+      map: map,
+      draggable: true,
+      animation: google.maps.Animation.DROP,
+      position: {lat: lt, lng: lg},
+    });
+    marker.addListener('click', toggleBounce);
+  }
+
+  function toggleBounce() {
+    if (marker.getAnimation() !== null) {
+      marker.setAnimation(null);
+    } else {
+      marker.setAnimation(google.maps.Animation.BOUNCE);
+    }
+  }
+
+</script>
+<script async defer
+src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLE_API_KEY'] %>&callback=initMap">
+</script>
+</body>
+</html>
